@@ -31,6 +31,4 @@ classification techniques on real-world medical data.
 This project was completed as a guided project from the Dataquest
 Data Scientist in Python career track.
 
-## Files
-- `DataQuest_logistic_regression.ipynb` – Full analysis and model implementation
 
