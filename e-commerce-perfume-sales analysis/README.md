@@ -114,6 +114,13 @@ Built an interactive dashboard to visualize:
 
 ---
 
+## Dataset
+
+- **Source**: [Perfume E-Commerce Dataset 2024](https://www.kaggle.com/datasets/kanchana1990/perfume-e-commerce-dataset-2024) on Kaggle
+- **Files**: `ebay_womens_perfume.csv` (main file used)
+- **Rows**: ~1,000 records (after cleaning: 991)
+- **Columns**: Brand, Title, Price, Type, Available, Sold, Item Location, etc.
+
 ## Repository Structure
 
 ```
