@@ -72,11 +72,6 @@ Developed analytical queries to answer key business questions:
 
 #### Revenue Analysis
 
-* Calculated revenue as:
-
-  ```sql
-  revenue = price * sold
-  ```
 * Identified:
 
   * Top revenue-generating brands
