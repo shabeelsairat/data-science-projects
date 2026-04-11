@@ -1,4 +1,4 @@
-# E-commerce Perfume Sales Analysis (eBay) (Project on-going)
+# E-commerce Perfume Sales Analysis (eBay)
 
 ## Project Overview
 
