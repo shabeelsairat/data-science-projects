@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-This project is an end-to-end data analytics pipeline built to analyze perfume sales data scraped from eBay. It covers the complete workflow from data extraction and cleaning (ETL) to data warehousing in BigQuery and visualization using Looker Studio.
+This project is an end-to-end data analytics pipeline built to analyze perfume sales data scraped from eBay using APIs. It covers the complete workflow from data extraction and cleaning (ETL) to data warehousing in BigQuery and visualization using Looker Studio.
 
-The goal of this project is to derive actionable insights such as top-performing brands, revenue distribution, and product-type trends.
+The goal of this project is to derive actionable insights such as top performing brands, revenue distribution, and product type trends.
 
 ---
 
@@ -37,46 +37,59 @@ The goal of this project is to derive actionable insights such as top-performing
 
 ### 2. Data Cleaning & Transformation (Python ETL)
 
-Performed extensive preprocessing using Pandas:
+## ETL Process Breakdown
 
-* Handled rows where key availability fields were null
-* Converted `lastUpdated` column to proper timestamp format
-* Handled missing values (`NaT`, `NaN`) appropriately
-* Extracted:
+### 1. Extract
+- Downloaded the dataset using `kagglehub`
+- Loaded the women's perfume CSV into a pandas DataFrame
 
-  * `update_date`
-  * (Dropped derived columns like month/hour for normalization)
-* Standardized product categories using title parsing:
+### 2. Transform
+- Removed duplicate rows
+- Handled missing values (brand, type, available, sold)
+- Standardized perfume **Type** by parsing the `title` column (EDP, EDT, Cologne, Mist, etc.)
+- Cleaned `priceWithCurrency` into separate `price`, `currency`, and `unit` (`/ea`) columns
+- Converted `lastUpdated` to proper datetime and extracted `update_date`
+- Lowercased and stripped text fields for consistency
 
-  * Eau de Parfum (EDP)
-  * Eau de Toilette (EDT)
-* Cleaned and validated price columns
-* Removed redundant fields like raw currency strings
-
----
-
-### 3. Data Loading (BigQuery)
-
-* Loaded cleaned dataset into **Google BigQuery**
-* Used explicit schema definitions to ensure correct data types
-* Applied `WRITE_TRUNCATE` strategy for controlled updates
-* Maintained clean and analysis-ready table structure
+### 3. Load
+- Loaded the cleaned DataFrame into **Google BigQuery**
+- Table: `perfume_data.cleaned_perfume_data`
+- Schema optimized for analysis (FLOAT for price/sold/available, TIMESTAMP for dates, etc.)
 
 ---
 
 ### 4. Data Analysis (SQL in BigQuery)
 
-Developed analytical queries to answer key business questions:
+### Key Insights Discovered:
+- **Calvin Klein** is the top revenue-generating brand
+- **Eau de Parfum (EDP)** is the most popular and highest revenue generating perfume type
+- Mid range priced perfumes ($20–$50) drive the majority of revenue
+- The average price of a profuct is 40$
+- **Hackensack, New Jersey** is the highest revenue location
+- Top 10 brands contribute ~45% of total revenue
+- Many high-demand perfumes are currently out of stock — strong restocking opportunity
 
-#### Top Selling Brands
+## Technologies Used
+- **Google BigQuery** – Data querying & analysis
+- **SQL** – All data cleaning, aggregation, CTEs, and window functions
 
-#### Revenue Analysis
+This repository contains all the SQL queries I wrote:
 
-* Identified:
-
-  * Top revenue-generating brands
-  * Revenue distribution by location
-  * Revenue by product type
+- Sample data exploration
+- Overall KPIs (Revenue, Total Sold, Avg Price, Product Count)
+- Top 10 brands by product count
+- Most sold top 10 brands
+- Most used perfume types (EDP dominates)
+- Top 10 expensive brands (Creed is the most expensive)
+- Top 10 products by revenue ("Escape by Calvin Klein" leads)
+- Top 10 revenue making brands (Calvin Klein #1)
+- Revenue by location (Hackensack, New Jursey leads)
+- Revenue by perfume type
+- Best selling perfume type by location (with ranking using CTE + Window function)
+- Revenue contribution percentage (Top 10 brands = 45%)
+- Price range analysis (Low / Medium / High)
+- Availability vs Sales (High demand out of stock items)
+- Location wise detailed performance
 
 #### Data Normalization
 
@@ -87,25 +100,29 @@ Developed analytical queries to answer key business questions:
 
 ### 5. Dashboard (Looker Studio)
 
-Built an interactive dashboard to visualize:
+**[View Full Interactive Dashboard](https://lookerstudio.google.com/reporting/b6aefcb7-dca9-4c27-a820-16b2b89de01a)**
 
 
 ## Key Insights
 
-* Certain legacy brands (e.g., Calvin Klein, Versace) dominate sales volume
-* Eau de Parfum (EDP) contributes significantly higher revenue compared to EDT
-* Revenue distribution varies widely by seller location
-* Data inconsistencies (brand casing, type labeling) can significantly affect analysis if not cleaned
+This project analyzes real-world perfume e-commerce data to answer critical business questions:
+- Which brands and perfume types generate the most revenue?
+- Which locations are the most profitable?
+- What is the relationship between price and sales?
+- Which products have high demand but low availability?
 
----
+**Total Scope**:
+- **Total Revenue**: $13.89 Million
+- **Total Products Sold**: 489.4K
+- **Brands**: 244
+- **Product Types**: 8 (EDP dominates)
 
-## Learnings
+**Dominant Insights**:
+- **Calvin Klein** is the clear revenue leader
+- **Eau de Parfum (EDP)** drives 62% of revenue
+- Mid-range perfumes ($20–$50) deliver the highest revenue
+- **Hackensack, New Jersey** is the top-performing location
 
-* Importance of proper data cleaning before analysis
-* Handling missing values without introducing bias
-* Writing efficient SQL queries using aggregation
-* Designing a clean data schema for analytics
-* Building end-to-end data pipelines from raw data to dashboard
 
 ---
 
